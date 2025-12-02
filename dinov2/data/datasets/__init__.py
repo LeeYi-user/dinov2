@@ -5,3 +5,8 @@
 
 from .image_net import ImageNet
 from .image_net_22k import ImageNet22k
+from .hpaone import HPAone
+from .hpafov import HPAFoV
+from .chammi_cp import CHAMMI_CP
+from .chammi_hpa import CHAMMI_HPA
+from .chammi_wtc import CHAMMI_WTC

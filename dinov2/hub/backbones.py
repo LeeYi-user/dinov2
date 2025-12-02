@@ -4,7 +4,7 @@
 # found in the LICENSE file in the root directory of this source tree.
 
 from enum import Enum
-from typing import Union
+from typing import Optional, Union
 
 import torch
 
@@ -13,6 +13,7 @@ from .utils import _DINOV2_BASE_URL, _make_dinov2_model_name
 
 class Weights(Enum):
     LVD142M = "LVD142M"
+    CELL_DINO = "CELL-DINO"
 
 
 def _make_dinov2_model(
@@ -28,6 +29,8 @@ def _make_dinov2_model(
     interpolate_offset: float = 0.1,
     pretrained: bool = True,
     weights: Union[Weights, str] = Weights.LVD142M,
+    pretrained_url: Optional[str] = None,
+    pretrained_path: Optional[str] = None,
     **kwargs,
 ):
     from ..models import vision_transformer as vits
@@ -53,9 +56,16 @@ def _make_dinov2_model(
     model = vits.__dict__[arch_name](**vit_kwargs)
 
     if pretrained:
-        model_full_name = _make_dinov2_model_name(arch_name, patch_size, num_register_tokens)
-        url = _DINOV2_BASE_URL + f"/{model_base_name}/{model_full_name}_pretrain.pth"
-        state_dict = torch.hub.load_state_dict_from_url(url, map_location="cpu")
+        if pretrained_path is not None:
+            state_dict = torch.load(pretrained_path, map_location="cpu")
+        else:
+            if pretrained_url is None:
+                model_full_name = _make_dinov2_model_name(arch_name, patch_size, num_register_tokens)
+                url = _DINOV2_BASE_URL + f"/{model_base_name}/{model_full_name}_pretrain.pth"
+            else:
+                url = pretrained_url
+            assert url is not None
+            state_dict = torch.hub.load_state_dict_from_url(url, map_location="cpu")
         model.load_state_dict(state_dict, strict=True)
 
     return model
@@ -152,5 +162,63 @@ def dinov2_vitg14_reg(*, pretrained: bool = True, weights: Union[Weights, str] =
         num_register_tokens=4,
         interpolate_antialias=True,
         interpolate_offset=0.0,
+        **kwargs,
+    )
+
+
+def celldino_hpa_vitl16(
+    *,
+    pretrained_url: Optional[str] = None,
+    pretrained_path: Optional[str] = None,
+    pretrained: bool = True,
+    weights: Union[Weights, str] = Weights.CELL_DINO,
+    in_channels: int = 4,
+    **kwargs,
+):
+    """
+    Cell-DINO ViT-L/16 model dataset pretrained on HPA single cell dataset.
+    """
+    return _make_dinov2_model(
+        arch_name="vit_large",
+        patch_size=16,
+        img_size=224,
+        num_register_tokens=0,
+        interpolate_antialias=False,
+        interpolate_offset=0.1,
+        block_chunks=4,
+        pretrained_url=pretrained_url,
+        pretrained_path=pretrained_path,
+        pretrained=pretrained,
+        weights=weights,
+        in_chans=in_channels,
+        **kwargs,
+    )
+
+
+def celldino_cp_vits8(
+    *,
+    pretrained_url: Optional[str] = None,
+    pretrained_path: Optional[str] = None,
+    pretrained: bool = True,
+    weights: Union[Weights, str] = Weights.CELL_DINO,
+    in_channels: int = 5,
+    **kwargs,
+):
+    """
+    Cell-DINO ViT-S/8 model dataset pretrained on the combined cell painting dataset.
+    """
+    return _make_dinov2_model(
+        arch_name="vit_small",
+        patch_size=8,
+        img_size=128,
+        num_register_tokens=0,
+        interpolate_antialias=False,
+        interpolate_offset=0.1,
+        block_chunks=4,
+        pretrained_url=pretrained_url,
+        pretrained_path=pretrained_path,
+        pretrained=pretrained,
+        weights=weights,
+        in_chans=in_channels,
         **kwargs,
     )

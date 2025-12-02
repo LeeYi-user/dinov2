@@ -1,5 +1,7 @@
 :new: [2025-08-14] *Please check out the more recent [DINOv3](https://github.com/facebookresearch/dinov3) effort continuing this line of work.*
 
+:new: [2025-11-21] *Added ChannelAgnostic-DINO code following [Scaling Channel-Adaptive Self-Supervised Learning](https://openreview.net/forum?id=pT8sgtRVAf), and Cell-DINO code [README](https://github.com/facebookresearch/dinov2/blob/main/README_CELL-DINO_AND_CHANNEL-DINO.md)*
+
 [2025-06-11] *Added dino.txt inference code, following [DINOv2 Meets Text: A Unified Framework for Image- and Pixel-Level Vision-Language Alignment](https://arxiv.org/abs/2412.16334).*
 
 [2023-10-26] *Added DINOv2 backbones with registers, following [Vision Transformers Need Registers](https://arxiv.org/abs/2309.16588).*

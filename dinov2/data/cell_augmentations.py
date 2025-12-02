@@ -10,7 +10,6 @@ from torchvision import transforms
 from .transforms_cells import (
     RandomContrastProteinChannel,
     RandomRemoveChannelExceptProtein,
-    RandomRemoveChannel,
     RandomBrightness,
     RandomContrast,
     Div255,

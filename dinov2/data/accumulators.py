@@ -3,7 +3,6 @@
 # This source code is licensed under the CC-by-NC licence,
 # found in the LICENSE_CELLDINO file in the root directory of this source tree.
 
-import logging
 from collections import defaultdict
 from typing import Dict, List, Optional, Any
 

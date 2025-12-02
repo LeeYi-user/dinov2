@@ -3,11 +3,6 @@
 # This source code is licensed under the CC-by-NC licence,
 # found in the LICENSE_CELLDINO file in the root directory of this source tree.
 
-import logging
-import os
-import re
-from enum import Enum
-from pathlib import Path
 from typing import Any
 
 from fvcore.common.checkpoint import Checkpointer, PeriodicCheckpointer

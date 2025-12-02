@@ -3,7 +3,6 @@
 # This source code is licensed under the CC-by-NC licence,
 # found in the LICENSE_CELLDINO file in the root directory of this source tree.
 
-#!/usr/bin/env python3
 import torch
 import torchvision
 from dinov2.hub.backbones import celldino_hpa_vitl16, celldino_cp_vits8

@@ -386,7 +386,7 @@ def make_eval_data_loader(
         test_dataset = make_dataset(dataset_str=test_dataset_str_or_path_or_loo_dataset, transform=transform)
         collate_fn = None
     else:
-        logger.info(f"Making data loader for feature dataset (typical in leave one out evaluation)")
+        logger.info(f'Making data loader for feature dataset (typical in leave one out evaluation)')
         test_dataset = test_dataset_str_or_path_or_loo_dataset
         collate_fn = None
     class_mapping = None
@@ -949,7 +949,7 @@ def eval_linear_with_model(
             results_dict = average_metrics(results_dict, ignore_keys=["best_classifier"])
         else:
             results_dict = {**results_dict[_try]}
-    else:  ### if leave one out is True
+    else:  # if leave one out is True
         test_results_dict = {}
         for loo_label in loo_dict.keys():
 

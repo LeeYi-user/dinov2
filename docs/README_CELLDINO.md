@@ -31,9 +31,9 @@ pip install -U scikit-learn
 
 Instructions how to prepare HPA single cell and HPA Field of view data will be added soon. 
 
-The HPA-FoV dataset is available [here](https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD2443) 
+The HPA-FoV and HPA single cell (HPAone) datasets are available [here](https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD2443) 
 
-Required files for HPA single cell (dataloader : HPAone.py): TODO
+Required files for HPA single cell (dataloader : HPAone.py): 
 
 train_data/varied_size_masked_single_cells_HPA
 train_data/fixed_size_masked_single_cells_HPA

@@ -1,5 +1,5 @@
 train: 
-  batch_size_per_gpu: 32
+  batch_size_per_gpu: 16
   OFFICIAL_EPOCH_LENGTH: 1756
   cell_augmentation: true
 student: 
@@ -27,4 +27,4 @@ crops:
   global_crops_size: 224
   local_crops_size: 96
 evaluation:  
-  eval_period_iterations: 4500
+  eval_period_iterations: 9000

@@ -13,7 +13,7 @@ with special thanks to Elouan Gardes for his contributions to the codebase.
 
 
 
-# Cell-DINO: Unbiased Image-based Embeddings for Cell Fluorescent Microscopy (CELL-DINO)
+# Cell-DINO: Self-Supervised Image-based Embeddings for Cell Fluorescent Microscopy (CELL-DINO)
 
 Théo Moutakanni, Camille Couprie, Seungeun Yi, Elouan Gardes, Piotr Bojanowski, Hugo Touvron, Michael Doron, Zitong S. Chen, Nikita Moshkov, Mathilde Caron, Armand Joulin,  Wolfgang M. Pernice, Juan C. Caicedo
 

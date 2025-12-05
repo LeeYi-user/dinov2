@@ -1,5 +1,5 @@
 
-# Cell-DINO: Unbiased Image-based Embeddings for Cell Fluorescent Microscopy
+# Cell-DINO: Self-Supervised Image-based Embeddings for Cell Fluorescent Microscopy
 
 Théo Moutakanni*, Camille Couprie*, Seungeun Yi*, Elouan Gardes*, Piotr Bojanowski*, Hugo Touvron*, Michael Doron, Zitong S. Chen, Nikita Moshkov, Mathilde Caron, Armand Joulin,  Wolfgang M. Pernice, Juan C. Caicedo
 
@@ -38,7 +38,7 @@ Required files for HPA single cell (dataloader : HPAone.py):
 train_data/varied_size_masked_single_cells_HPA
 train_data/fixed_size_masked_single_cells_HPA
 train_data/varied_size_masked_single_cells_HPA
-varied_size_masked_single_cells_pretrain_20240507.csv 
+varied_size_masked_single_cells_pretrain_20240507.csv
 fixed_size_masked_single_cells_evaluation_20240507.csv 
 fixed_size_masked_single_cells_pretrain_20240507.csv
 
@@ -60,7 +60,7 @@ python dinov2/run/train/train.py \
 
 Training time is approximately 2 days on 4 A100 GPU nodes and the resulting checkpoint should reach 78.5 F1 accuracy for protein localization with a linear evaluation.
 
-The training code saves the weights of the teacher in the `eval` folder every 12500 iterations for evaluation.
+The training code saves the weights of the teacher in the `eval` folder every 9000 iterations for evaluation.
 
 ## Evaluation
 

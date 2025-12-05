@@ -80,9 +80,12 @@ class XChannelsTIFFDecoder(Decoder):
 
 class ChannelSelectDecoder(Decoder):
     def __init__(self, image_data: bytes, select_channel: bool = False) -> None:
-        self._image_data = image_data[:-1]
-        self._channel = image_data[-1]
         self.select_channel = select_channel
+        if select_channel:
+            self._image_data = image_data[:-1]
+            self._channel = image_data[-1]
+        else:
+            self._image_data = image_data
 
     def decode(self):
         im = np.asarray(Image.open(BytesIO(self._image_data)))

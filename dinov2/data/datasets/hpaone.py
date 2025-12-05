@@ -93,7 +93,7 @@ def _simple_parse_csv(img_rootdir, csv_filepath: str):
     samples = []
     with open(csv_filepath) as filename:
         template = csv.DictReader(filename)
-        samples = [(img_rootdir + "/" + row["file"].rsplit("/", 1)[1], 0) for row in template]
+        samples = [(os.path.join(img_rootdir , row["img_path"]), 0) for row in template]
     return samples
 
 
@@ -121,16 +121,14 @@ def _parse_csv(img_rootdir, csv_labels_path: str):
                     cell_type,
                 )
             )
-
     return samples
 
 
 def _load_file_names_and_labels_ssl(
     root: str,
 ) -> Tuple[List[str], List[Any]]:
-
-    curr_dir_train = os.path.join(root, "train_data/varied_size_masked_single_cells_HPA")
-    csv_all_path = os.path.join(root, "varied_size_masked_single_cells_pretrain_20240507.csv")
+    curr_dir_train = os.path.join(root, "fixed_size_masked_single_cells_HPA")
+    csv_all_path = os.path.join(root, "pretraining_hpa_single_cell.csv")
     samples = _simple_parse_csv(curr_dir_train, csv_all_path)
     image_paths, fake_labels = zip(*samples)
     lab = list(fake_labels)
@@ -147,7 +145,7 @@ def _load_file_names_and_labels_train_or_test(
         csv_labels_path = os.path.join(root, "fixed_size_masked_single_cells_pretrain_20240507.csv")
     elif split == _Split.VAL.value.upper():
         csv_labels_path = os.path.join(root, "fixed_size_masked_single_cells_evaluation_20240507.csv")
-    curr_dir_val = os.path.join(root, "train_data/fixed_size_masked_single_cells_HPA")
+    curr_dir_val = os.path.join(root, "fixed_size_masked_single_cells_HPA")
 
     samples = _parse_csv(curr_dir_val, csv_labels_path)
     image_paths, protein_location, cell_type = zip(*samples)

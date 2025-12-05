@@ -129,23 +129,31 @@ class _Mode(Enum):
             return None
 
 
-def _list_images_from_csv(img_path, csv_path):
-    L = []
-    with open(csv_path) as filename:
-        reader = csv.DictReader(filename)
-        for row in reader:
-            L.append(os.path.join(img_path, row["ID"] + ".png"))
-    return L
+# def _list_images_from_csv(img_path, csv_path):
+#     L = []
+#     with open(csv_path) as filename:
+#         reader = csv.DictReader(filename)
+#         for row in reader:
+#             breakpoint()
+#             L.append(os.path.join(img_path, row["ID"] + ".png"))
+#     return L
 
+def _list_ssl_images(img_rootdir):
+    img_list = []
+    for file in os.listdir(img_rootdir):
+        if file.endswith(".tiff"):
+            img_list.append(os.path.join(img_rootdir, file))
+    listofzeros = [0] * len(img_list)
+    return img_list, listofzeros
 
 def _load_file_names_and_labels_ssl(
     root: str,
 ) -> Tuple[List[str], List[Any]]:
 
-    curr_img_path = os.path.join(root, "normalized_data")
-    csv_train_ssl = os.path.join(root, "whole_images_names.csv")
-    image_paths = _list_images_from_csv(curr_img_path, csv_train_ssl)
-    labels = [i for i in range(len(image_paths))]
+    curr_img_path = os.path.join(root, "512_whole_images")
+    csv_train_ssl = os.path.join(root, "whole_images_names_deduplicated.csv")
+    image_paths, labels = _list_ssl_images(curr_img_path)
+    #labels = [i for i in range(len(image_paths))]
 
     return image_paths, labels
 
@@ -156,7 +164,7 @@ def _load_file_names_and_labels(
     mode: _Mode,
 ) -> Tuple[List[str], List[Any], np.ndarray]:
 
-    data_path = os.path.join(root, "new_512_whole_images")
+    data_path = os.path.join(root, "512_whole_images")
     csv_fpath = os.path.join(root, get_csv_fpath(split))
 
     image_paths = []
@@ -244,10 +252,11 @@ class HPAFoV(ExtendedVisionDataset):
         self.channel_adaptive = True
         if split == _Split.SSL.value.upper() or split == _Split.SSL or split == "SSL":
             self._image_paths, self._labels = _load_file_names_and_labels_ssl(root)
-            self.channel_adaptive = False
+            #self.channel_adaptive = False
         else:
             self._image_paths, self._labels = _load_file_names_and_labels(root, self.split, self.mode)
-            self._channels = np.repeat(np.array([[0, 1, 2, 3]]), len(self._image_paths), axis=0).tolist()
+
+        self._channels = np.repeat(np.array([[0, 1, 2, 3]]), len(self._image_paths), axis=0).tolist()
 
         if self.wildcard == _WildCard.SEPARATECHANNELS.value.upper():
             image_paths, labels, channels = self._image_paths, self._labels, self._channels

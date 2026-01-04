@@ -167,7 +167,16 @@ def main():
             
             # Resize
             attn_resized = cv2.resize(attn_map, (w_raw, h_raw), interpolation=cv2.INTER_CUBIC)
-            attn_norm = (attn_resized - attn_resized.min()) / (attn_resized.max() - attn_resized.min())
+            # Robust Min-Max Normalization (ignore top 0.1% outliers to avoid single-pixel domination)
+            # v_min, v_max = attn_resized.min(), attn_resized.max() # Old way
+            v_min, v_max = np.percentile(attn_resized, 0), np.percentile(attn_resized, 99.9)
+            attn_clipped = np.clip(attn_resized, v_min, v_max)
+            
+            attn_norm = (attn_clipped - v_min) / (v_max - v_min + 1e-8)
+            
+            # Gamma Correction: Boost weak values
+            # Power < 1.0 (e.g. 0.5) brightens the shadows (low attention areas)
+            attn_norm = np.power(attn_norm, 0.4)
             
             heatmap = cv2.applyColorMap(np.uint8(255 * attn_norm), cv2.COLORMAP_JET)
             # heatmap is BGR for OpenCV

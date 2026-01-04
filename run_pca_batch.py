@@ -117,7 +117,7 @@ def main():
     total_features = torch.cat(all_patch_tokens, dim=0) # (Total_patches, 1024)
     
     # PCA
-    pca = PCA(n_components=3)
+    pca = PCA(n_components=1)
     # Convert to numpy (if not already cpu tensor)
     if isinstance(total_features, torch.Tensor):
         total_features_np = total_features.numpy()
@@ -126,12 +126,12 @@ def main():
         
     pca.fit(total_features_np)
     pca_features = pca.transform(total_features_np)
+    pca_features = pca_features[:, 0]
     
     # Min-Max normalize to 0-1
-    for i in range(3):
-        pca_features[:, i] = (pca_features[:, i] - pca_features[:, i].min()) / \
-                             (pca_features[:, i].max() - pca_features[:, i].min())
-                             
+    pca_features = (pca_features - pca_features.min()) / \
+                         (pca_features.max() - pca_features.min())
+
     # Reconstruct images
     print("Saving results...")
     current_idx = 0
@@ -142,8 +142,8 @@ def main():
         img_pca = pca_features[current_idx : current_idx + n_patches]
         current_idx += n_patches
         
-        # Reshape to (H_patches, W_patches, 3)
-        img_pca = img_pca.reshape(meta['h_patches'], meta['w_patches'], 3)
+        # Reshape to (H_patches, W_patches)
+        img_pca = img_pca.reshape(meta['h_patches'], meta['w_patches'])
         
         # Save
         out_name = os.path.splitext(meta['filename'])[0] + '_pca.png'
